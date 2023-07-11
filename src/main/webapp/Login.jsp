@@ -13,9 +13,7 @@ body, html {
 .bg {
 	/* The image used */
 	background-image: url("./image/hogwarts_night.jpg");
-	/* Full height */
 	height: 100%;
-	/* Center and scale the image nicely */
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: cover;
@@ -119,11 +117,14 @@ margin-top:20px;
 				}
 				%>
 
-				<form method="post" action="verify.jsp">
+				
+				<form method="post" action="Verify.jsp">
 					<input type="text" name="usernameOrEmail"
 						pattern="[a-zA-Z0-9\s@.]+"
 						title="Only characters and numbers are allowed"
-						placeholder="Username or Email" required> <input
+						placeholder="Username or Email" required> 
+						
+					<input
 						type="password" name="password" placeholder="Password" required>
 
 				
@@ -141,7 +142,7 @@ margin-top:20px;
 				</div>
 				<button class="submit-button" type="submit" value="Login">Submit</button>
 				</form>
-			</div>
+			</div>	
 		</div>
 	</div>
 </body>
