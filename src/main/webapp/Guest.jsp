@@ -166,10 +166,10 @@ padding: 10px;
 	<div class="navbar">
 		<h1>Hogwarts Library</h1>
 		<ul>
-			<li><a href="Guest.jsp">Home</a></li>
-			<li><a href="./Genre.jsp">Genre</a></li>
-			<li><a href="./Login.jsp">Login</a></li>
-			<li><a href="mailto:wai71308@gmail.com">Contact</a></li>
+			<li><a href="Guest.jsp"><i class="fas fa-home"></i>Home</a></li>
+			<li><a href="./Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
+			<li><a href="mailto:wai71308@gmail.com"><i class="fas fa-comment-alt"></i>Contact</a></li>
+			<li><a href="./Login.jsp"><i class="fas fa-sign-out-alt"></i>Login</a></li>
 		</ul>
 	</div>
 
