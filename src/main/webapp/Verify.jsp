@@ -26,7 +26,7 @@
 		Class.forName("com.mysql.jdbc.Driver");
 
 		// Step 2: Define Connection URL
-		String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+		String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
 
 		// Step 3: Establish connection to URL
 		Connection conn = DriverManager.getConnection(connURL);
@@ -63,7 +63,7 @@
 		session.setAttribute("sessAdminID", username);
 		session.setAttribute("sessCustomerID", username);
 		session.setAttribute("loginStatus", "success");
-		session.setMaxInactiveInterval(60); //to set valid time for the session , in this case 60sec
+		session.setMaxInactiveInterval(6000); //to set valid time for the session , in this case 60sec
 
 		if (role.equalsIgnoreCase("admin")) {
             response.sendRedirect("Admin/displayAdmin.jsp");

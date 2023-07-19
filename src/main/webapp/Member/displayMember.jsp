@@ -176,7 +176,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		<h1>Hogwarts Library</h1>
 		<ul>
 			<li><a href="Guest.jsp"><i class="fas fa-home"></i>Home</a></li>
-			<li><a href="./Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
+			<li><a href="../Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
 			<li><a href="mailto:wai71308@gmail.com"><i class="fas fa-comment-alt"></i>Contact</a></li>
 			<li><a href="../Login.jsp"><i class="fas fa-sign-out-alt"></i>Log out</a></li>
 			<li><img src="../image/default.png" width="30" height="30"></li>
@@ -222,7 +222,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 				Class.forName("com.mysql.jdbc.Driver");
 
 				// Step 2: Define Connection URL
-				String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+				String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
 
 				// Step 3: Establish connection to URL
 				Connection conn = DriverManager.getConnection(connURL);
@@ -243,10 +243,9 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 				// Step 6: Process Result
 				while (rs.next()) {
 					hasResults = true;
-
+					int id = rs.getInt("id");
 					String imagePath = rs.getString("image");
 					String imageUrl = "../image/" + imagePath;
-
 					String title = rs.getString("title");
 					String author = rs.getString("author");
 					double price = rs.getDouble("price");
@@ -273,7 +272,13 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 							<%=price%></p>
 					</div>
 
-					 <div class="modal fade" id="exampleModalCenter<%=rs.getString("id")%>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					 <div class="modal fade" id="exampleModalCenter<%=rs.getString("id")%>" role="dialog" aria-labelledby="exampleModalCenterTitle" data-backdrop="static" data-keyboard="false">
+					<script>
+					 var modal = document.getElementById('exampleModalCenter<%=rs.getString("id")%>');
+					    modal.addEventListener('click', function(event) {
+					        event.stopPropagation();
+					    });
+					    </script>
 				    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
 				        <div class="modal-content">
 				            <div class="modal-header">
@@ -287,16 +292,19 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 				                        <img class="card-img-top" src="<%=imageUrl%>" width="500" height="500" alt="Book Image">
 				                    </div>
 				                    <div class="col-lg-6">
-				                        <h5 class="card-title"><%=title%></h5>
-				                        <p class="card-text">Author: <%=author%></p>
-				                        <p class="card-text">Price: <%=price%></p>
-				                        <p class="card-text">Quantity: <%=quantity%></p>
+				                        <h5 class="card-title" id="title"><%=title%></h5>
+										<p class="card-text" id="id" style="display: none;"><%=id%></p>
+				                        <p class="card-text" id="author">Author: <%=author%></p>
+				                        <p class="card-text" id="price">Price: <%=price%></p>
+				                        <p class="card-text" id="quantity">Quantity: <%=quantity%></p>
 				                        <p class="card-text">Publisher: <%=publisher%></p>
 				                        <p class="card-text">Publishing Date: <%=publicationDate%></p>
 				                        <p class="card-text">ISBN: <%=isbn%></p>
 				                        <p class="card-text">Rating: <%=rating%></p>
 				                        <p class="card-text">Description: <%=description%></p>
-				                        <p class="card-text">Genre  <%=genre%></p>
+				                        <p class="card-text">Genre:  <%=genre%></p>
+				                        <button type="button" class="btn btn-primary" onclick="redirectToCheckout()">Buy Now </button>
+
 				                    </div>
 				                </div>
 				            </div>
@@ -346,7 +354,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 					class="fab fa-github"></i></a>
 			</div>
 			<div class="img-footer">
-			<img src="../image/SP.jpeg" width="110" height="40">
+			<img src="../image/SP.png" width="110" height="40">
 			</div>
 			<p>&copy; 2023 Hogwarts Library. All rights reserved.</p>
 		</div>
@@ -354,16 +362,19 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 
 
 	<script>
-		function showBookDetails(title, author, price, quantity, publisher,
-				publicationDate, isbn, genre, rating, description) {
-			var details = "Title: " + title + "\n" + "Author: " + author + "\n"
-					+ "Price: " + price + "\n" + "Quantity: " + quantity + "\n"
-					+ "Publisher: " + publisher + "\n" + "Publication Date: "
-					+ publicationDate + "\n" + "ISBN: " + isbn + "\n"
-					+ "Genre: " + genre + "\n" + "Rating: " + rating + "\n"
-					+ "Description: " + description;
-
-			alert(details);
+		function redirectToCheckout() {
+			var bookId = document.getElementById("id").innerHTML;
+			var title = document.getElementById("title").innerHTML;
+			title = title.split(" ")[1];
+			var author = document.getElementById("author").innerHTML;
+			author = author.split(" ")[1];
+			var price = document.getElementById("price").innerHTML;
+			price = price.split(" ")[1];
+			var quantity = document.getElementById("quantity").innerHTML;
+			quantity = quantity.split(" ")[1];
+			// Redirect the user to the checkout page with the book information as query parameters
+			document.cookie = "bookId=" + bookId + "; title=" + encodeURIComponent(title) + "; author=" + encodeURIComponent(author) + "; price=" + price + "; quantity=" + quantity;
+			window.location.href = "checkout.jsp";
 		}
 	</script>
 </body>

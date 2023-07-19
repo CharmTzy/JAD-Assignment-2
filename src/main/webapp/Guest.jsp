@@ -211,7 +211,7 @@ padding: 10px;
 				Class.forName("com.mysql.jdbc.Driver");
 
 				// Step 2: Define Connection URL
-				String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+				String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
 
 				// Step 3: Establish connection to URL
 				Connection conn = DriverManager.getConnection(connURL);
@@ -335,7 +335,7 @@ padding: 10px;
 					class="fab fa-github"></i></a>
 			</div>
 			<div class="img-footer">
-			<img src="./image/SP.jpeg" width="110" height="40">
+			<img src="./image/SP.png" width="110" height="40">
 			</div>
 			<p>&copy; 2023 Hogwarts Library. All rights reserved.</p>
 		</div>
