@@ -157,12 +157,42 @@ padding: 10px;
   font-size: 16px;
 }
 
+.quantity {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+
+.quantity-input {
+    width: 40px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin: 0 5px;
+}
+
+.minus-btn,
+.plus-btn {
+    width: 30px;
+    height: 30px;
+    border: none;
+    background-color: #f1f1f1;
+    cursor: pointer;
+}
+
+.minus-btn:hover,
+.plus-btn:hover {
+    background-color: #ddd;
+}
 
 
 
 </style>
 </head>
 <body>
+	
 <%
 
 String CustomerID = (String) session.getAttribute("sessCustomerID");
@@ -296,15 +326,22 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 										<p class="card-text" id="id" style="display: none;"><%=id%></p>
 				                        <p class="card-text" id="author">Author: <%=author%></p>
 				                        <p class="card-text" id="price">Price: <%=price%></p>
-				                        <p class="card-text" id="quantity">Quantity: <%=quantity%></p>
+				                        <p class="card-text" id="quantity"> <%=quantity%> Books Left</p>
 				                        <p class="card-text">Publisher: <%=publisher%></p>
 				                        <p class="card-text">Publishing Date: <%=publicationDate%></p>
 				                        <p class="card-text">ISBN: <%=isbn%></p>
 				                        <p class="card-text">Rating: <%=rating%></p>
 				                        <p class="card-text">Description: <%=description%></p>
 				                        <p class="card-text">Genre:  <%=genre%></p>
-				                        <button type="button" class="btn btn-primary" onclick="redirectToCheckout()">Buy Now </button>
-
+				                        
+				                        <div class="quantity">
+										    <button id="minus-btn" class="minus-btn" onclick="minusButtonClick(<%= id %>)" type="button">-</button>
+										    <input id="quantity-input<%= id %>" type="text" class="quantity-input" value="1">
+										    <button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
+										</div>
+					                   
+				                        <button type="button" class="btn btn-primary" onclick="redirectToCheckout(<%= id %>,<%= quantity %>)">Buy Now </button>
+										 <p id="error-message<%=id%>"></p>
 				                    </div>
 				                </div>
 				            </div>
@@ -319,6 +356,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 			<%
 			}
 
+				
 			// Step 7: Close connection
 			rs.close();
 			stmt.close();
@@ -360,23 +398,61 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		</div>
 	</footer>
 
+<script>
+// Function to handle the plus button click
+function plusButtonClick(id) {
+    let quantityInput = document.getElementById("quantity-input" + id);
+    console.log(quantityInput);
+    let quantity = Number(quantityInput.value) + 1;
+    
+    console.log(quantity);
+    quantityInput.value = quantity;
+}
+    // Function to handle the minus button click
+    function minusButtonClick(id) {
+        let quantityInput = document.getElementById("quantity-input" + id);
+        console.log(quantityInput);
+        let quantity = Number(quantityInput.value)-1;
+        console.log(quantity);
+     
+        if (quantity > 1) {
+        	
+            quantityInput.value = quantity ;
+        }
+    }
 
-	<script>
-		function redirectToCheckout() {
-			var bookId = document.getElementById("id").innerHTML;
-			var title = document.getElementById("title").innerHTML;
-			title = title.split(" ")[1];
-			var author = document.getElementById("author").innerHTML;
-			author = author.split(" ")[1];
-			var price = document.getElementById("price").innerHTML;
-			price = price.split(" ")[1];
-			var quantity = document.getElementById("quantity").innerHTML;
-			quantity = quantity.split(" ")[1];
-			// Redirect the user to the checkout page with the book information as query parameters
-			document.cookie = "bookId=" + bookId + "; title=" + encodeURIComponent(title) + "; author=" + encodeURIComponent(author) + "; price=" + price + "; quantity=" + quantity;
-			window.location.href = "checkout.jsp";
-		}
-	</script>
+
+
+
+    function redirectToCheckout(id, quantityLeft) {
+        let quantityInput = document.getElementById("quantity-input" + id);
+        var title = document.getElementById("title").innerText;
+        title = title.split(" ")[1];
+        var author = document.getElementById("author").innerText;
+        author = author.split(" ")[1];
+        var price = document.getElementById("price").innerText;
+        price = price.split(" ")[1];
+        var quantity = quantityInput.value;
+        // Compare quantity input with quantity left
+        if (parseInt(quantityInput.value) <= quantityLeft) {
+            // Redirect the user to the checkout page with the book information as query parameters
+            document.cookie = "bookId=" + id + "; title=" + encodeURIComponent(title) + "; author=" + encodeURIComponent(author) + "; price=" + price + "; quantity=" + quantityInput.value;
+            window.location.href = "checkout.jsp";
+            console.log(document.cookie);
+        }else{
+        	document.getElementById("error-message"+id).innerHTML = "<h5 style='color: red; text-align: center;'>Not enough number of books</h1>";
+        }
+    }
+
+
+
+    function calculateTotal(price, quantity) {
+        // Calculate the total price based on the unit price and quantity
+        return parseFloat(price) * parseInt(quantity);
+    }
+
+</script>
+
 </body>
 
 </html>

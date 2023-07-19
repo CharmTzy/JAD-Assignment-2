@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hogwarts Library</title>
+<title>Hogwart Library</title>
 <style>
 body, html {
 	height: 100%;

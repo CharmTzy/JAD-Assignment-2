@@ -211,7 +211,30 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		</ul>
 	</div>
 
-	
+	<div class="order-summary">
+    <h2>Order Summary</h2>
+    <div class="summary-item">
+        <span class="item-label">Book Title:</span>
+        <span class="item-value" id="book-title"></span>
+    </div>
+    <div class="summary-item">
+        <span class="item-label">Author:</span>
+        <span class="item-value" id="book-author"></span>
+    </div>
+    <div class="summary-item">
+        <span class="item-label">Price:</span>
+        <span class="item-value" id="book-price"></span>
+    </div>
+    <div class="summary-item">
+        <span class="item-label">Quantity:</span>
+        <span class="item-value" id="book-quantity"></span>
+    </div>
+    <div class="summary-item">
+        <span class="item-label">Total:</span>
+        <span class="item-value" id="order-total"></span>
+    </div>
+</div>
+
 	<div id="dropin-container"></div>
 <button id="submit-button" class="button button--small button--green">Purchase</button>
 	
@@ -230,7 +253,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 			<div class="img-footer">
 			<img src="../image/SP.png" width="110" height="40">
 			</div>
-			<p>&copy; 2023 Hogwarts Library. All rights reserved.</p>
+			<p>&copy; 2023 Hogwart Library. All rights reserved.</p>
 		</div>
 	</footer>
 
@@ -266,8 +289,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 	}
 
 	// example - just to test
-	System.out.println(getCookie("bookId"));
-	System.out.println(getCookie("title"));
+	
 	</script>
 	
 
