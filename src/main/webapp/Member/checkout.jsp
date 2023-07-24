@@ -211,33 +211,40 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		</ul>
 	</div>
 
-	<div class="order-summary">
-    <h2>Order Summary</h2>
-    <div class="summary-item">
-        <span class="item-label">Book Title:</span>
-        <span class="item-value" id="book-title"></span>
-    </div>
-    <div class="summary-item">
-        <span class="item-label">Author:</span>
-        <span class="item-value" id="book-author"></span>
-    </div>
-    <div class="summary-item">
-        <span class="item-label">Price:</span>
-        <span class="item-value" id="book-price"></span>
-    </div>
-    <div class="summary-item">
-        <span class="item-label">Quantity:</span>
-        <span class="item-value" id="book-quantity"></span>
-    </div>
-    <div class="summary-item">
-        <span class="item-label">Total:</span>
-        <span class="item-value" id="order-total"></span>
-    </div>
-</div>
-
-	<div id="dropin-container"></div>
-<button id="submit-button" class="button button--small button--green">Purchase</button>
-	
+ <div class="container">
+        <div class="row">
+        <div class="col-lg-6">
+               	<div id="dropin-container"></div>
+				<button id="submit-button" class="button button--small button--green">Purchase</button>
+            </div>
+            <div class="col-lg-6">
+                <h2>Order Summary</h2>
+                <div class="order-item">
+                    <span class="item-label">Book Title:</span>
+                    <span class="item-value" id="book-title"><%= request.getParameter("bookId") %></span>
+                </div>
+                <div class="order-item">
+                    <span class="item-label">Author:</span>
+                    <span class="item-value" id="book-author"><%= request.getParameter("author") %></span>
+                </div>
+                <div class="order-item">
+                    <span class="item-label">Price:</span>
+                    <span class="item-value" id="book-price"><%= request.getParameter("price") %></span>
+                </div>
+                <div class="order-item">
+                    <span class="item-label">Quantity:</span>
+                    <span class="item-value" id="book-quantity"><%= request.getParameter("quantity") %></span>
+                </div>
+                <div class="order-item">
+                    <span class="item-label">Total:</span>
+                    <span class="item-value" id="order-total"></span>
+                </div>
+            </div>
+            
+        </div>
+    </div><br><br>
+    
+    
 
 	<footer class="footer">
 		<div class="footer-container">
@@ -289,6 +296,9 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 	}
 
 	// example - just to test
+	
+	console.log(getCookie("bookId"));
+	console.log(getCookie("title"));
 	
 	</script>
 	

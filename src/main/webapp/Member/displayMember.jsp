@@ -6,20 +6,12 @@
 <html>
 <head>
 <link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
-	crossorigin="anonymous">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-	crossorigin="anonymous"></script>
+	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-	crossorigin="anonymous"></script>
+	src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
 <script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
-	crossorigin="anonymous"></script>
+	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -28,7 +20,7 @@
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
 
-<title>Hogwarts Library</title>
+<title>Hogwart Library</title>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 <style>
@@ -65,6 +57,9 @@ body, html {
 .navbar ul li a {
 	color: white;
 	text-decoration: none;
+	 display: flex; /* Use flex to align icon and text horizontally */
+    align-items: center; 
+    margin-right:20px;
 }
 
 .welcome {
@@ -187,6 +182,69 @@ padding: 10px;
     background-color: #ddd;
 }
 
+.cart {
+        display: inline-block;
+    }
+
+    .btn-primary {
+        margin-left: 50px; /* Adjust the value as needed */
+    }
+/* Style the dropdown content */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+    padding: 10px;
+    border-radius: 4px;
+    padding: 10px;
+    border-radius: 4px;	
+    
+}
+
+/* Style the links inside the dropdown */
+.dropdown-content a {
+    color: #333;
+    text-decoration: none;
+    display: block;
+    padding: 8px;
+    transition: background-color 0.3s;
+}
+.dropdown-content a i {
+    margin-right: 5px; /* Adjust the value to control the spacing */
+}
+/* Change link color on hover */
+.dropdown-content a:hover {
+    background-color: #f1f1f1;
+}
+
+
+.profile-dropdown img {
+
+    border-radius: 50%; /* Make the image appear as a circle */
+    
+    
+}
+
+/* Position the dropdown arrow caret icon */
+.profile-dropdown::after {
+    
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    position: absolute;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 12px;
+}
+
+/* Show the dropdown content when the image is clicked */
+.show {
+    display: block;
+}
 
 
 </style>
@@ -203,13 +261,23 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 }
 %>
 	<div class="navbar">
-		<h1>Hogwarts Library</h1>
+		<h1>Hogwart Library</h1>
 		<ul>
-			<li><a href="Guest.jsp"><i class="fas fa-home"></i>Home</a></li>
+			<li><a href="./Member/displayMember.jsp"><i class="fas fa-home"></i>Home</a></li>
 			<li><a href="../Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
+			<li><a href="./add2cart.jsp"><i class="fas fa-shopping-cart"></i>Cart</a></li>
 			<li><a href="mailto:wai71308@gmail.com"><i class="fas fa-comment-alt"></i>Contact</a></li>
-			<li><a href="../Login.jsp"><i class="fas fa-sign-out-alt"></i>Log out</a></li>
-			<li><img src="../image/default.png" width="30" height="30"></li>
+			
+			<li class="profile-dropdown">
+			    <img src="../image/default.png" width="35" height="35" onclick="toggleDropdown()">
+			    <div class="dropdown-content" id="profileDropdown" >
+			        <!-- Add the user's name or any other relevant information -->
+			        
+			        <a href="./updateMember.jsp" style = "color:black"><i class="fas fa-edit"></i>Edit Profile</a>
+			        <a href="#" style = "color:black"><i class="fas fa-image"></i>Change Avatar</a>
+			        <a href="../Login.jsp" style = "color:black"><i class="fas fa-sign-out-alt"></i>Log out</a>
+			    </div>
+			</li>
 			
 		</ul>
 	</div>
@@ -339,7 +407,9 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 										    <input id="quantity-input<%= id %>" type="text" class="quantity-input" value="1">
 										    <button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
 										</div>
-					                   
+										<div class = "cart">
+					                    <a href = "./add2cart.jsp"><i class="fas fa-shopping-cart"></i></a>
+					                    </div>
 				                        <button type="button" class="btn btn-primary" onclick="redirectToCheckout(<%= id %>,<%= quantity %>)">Buy Now </button>
 										 <p id="error-message<%=id%>"></p>
 				                    </div>
@@ -399,6 +469,26 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 	</footer>
 
 <script>
+
+function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.classList.toggle('show');
+}
+
+// Close the dropdown if the user clicks outside of it
+window.onclick = function(event) {
+    if (!event.target.matches('.profile-dropdown img')) {
+        const dropdowns = document.getElementsByClassName('dropdown-content');
+        for (let i = 0; i < dropdowns.length; i++) {
+            const openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+
+
 // Function to handle the plus button click
 function plusButtonClick(id) {
     let quantityInput = document.getElementById("quantity-input" + id);
@@ -437,7 +527,7 @@ function plusButtonClick(id) {
         if (parseInt(quantityInput.value) <= quantityLeft) {
             // Redirect the user to the checkout page with the book information as query parameters
             document.cookie = "bookId=" + id + "; title=" + encodeURIComponent(title) + "; author=" + encodeURIComponent(author) + "; price=" + price + "; quantity=" + quantityInput.value;
-            window.location.href = "checkout.jsp";
+            window.location.href = "<%= request.getContextPath() %>/Member/checkout.jsp";
             console.log(document.cookie);
         }else{
         	document.getElementById("error-message"+id).innerHTML = "<h5 style='color: red; text-align: center;'>Not enough number of books</h1>";
