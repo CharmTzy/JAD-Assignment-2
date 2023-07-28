@@ -390,28 +390,36 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 				                        <img class="card-img-top" src="<%=imageUrl%>" width="500" height="500" alt="Book Image">
 				                    </div>
 				                    <div class="col-lg-6">
-				                        <h5 class="card-title" id="title"><%=title%></h5>
-										<p class="card-text" id="id" style="display: none;"><%=id%></p>
-				                        <p class="card-text" id="author">Author: <%=author%></p>
-				                        <p class="card-text" id="price">Price: <%=price%></p>
-				                        <p class="card-text" id="quantity"> <%=quantity%> Books Left</p>
-				                        <p class="card-text">Publisher: <%=publisher%></p>
-				                        <p class="card-text">Publishing Date: <%=publicationDate%></p>
-				                        <p class="card-text">ISBN: <%=isbn%></p>
-				                        <p class="card-text">Rating: <%=rating%></p>
-				                        <p class="card-text">Description: <%=description%></p>
-				                        <p class="card-text">Genre:  <%=genre%></p>
-				                        
-				                        <div class="quantity">
-										    <button id="minus-btn" class="minus-btn" onclick="minusButtonClick(<%= id %>)" type="button">-</button>
-										    <input id="quantity-input<%= id %>" type="text" class="quantity-input" value="1">
-										    <button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
-										</div>
-										<div class = "cart">
-					                    <a href = "./add2cart.jsp"><i class="fas fa-shopping-cart"></i></a>
-					                    </div>
-				                        <button type="button" class="btn btn-primary" onclick="redirectToCheckout(<%= id %>,<%= quantity %>)">Buy Now </button>
-										 <p id="error-message<%=id%>"></p>
+										
+											<h5 class="card-title" id="title"><%=title%></h5>
+											<p class="card-text" id="author">Author: <%=author%></p>
+											<p class="card-text" id="price">Price: <%=price%></p>
+											<p class="card-text"><%=quantity%> Books Left</p>
+											<p class="card-text">Publisher: <%=publisher%></p>
+											<p class="card-text">Publishing Date: <%=publicationDate%></p>
+											<p class="card-text">ISBN: <%=isbn%></p>
+											<p class="card-text">Rating: <%=rating%></p>
+											<p class="card-text">Description: <%=description%></p>
+											<p class="card-text">Genre:  <%=genre%></p>
+											
+											<div class="quantity">
+												<button id="minus-btn" class="minus-btn" onclick="minusButtonClick(<%= id %>)" type="button">-</button>
+												<input id="quantity-input<%= id %>" type="text" class="quantity-input"  value="1">
+												<button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
+											</div>
+											<form method="post" action="AddtoCartInput.jsp" class="d-inline">
+												<input type="text" name="title" value="<%=title%>" style="display: none;">
+												<input type="text" name="id" value="<%=id%>" style="display: none;">
+												<input type="text" name="author" value="<%=author%>" style="display: none;">
+												<input type="text" name="price" value="<%=price%>" style="display: none;">
+												<input type="text" name="quantity" id="quantity-value<%= id %>" value="1" style="display: none;">
+												
+												<div class = "cart">
+													<button type="submit"><i class="fas fa-shopping-cart"></i></button>
+												</div>
+											</form>
+											<button type="button" class="btn btn-primary" onclick="redirectToCheckout(<%= id %>,<%= quantity %>)">Buy Now </button>
+											<p id="error-message<%=id%>"></p>
 				                    </div>
 				                </div>
 				            </div>
@@ -470,54 +478,46 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 
 <script>
 
-function toggleDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('show');
-}
+	function toggleDropdown() {
+		const dropdown = document.getElementById('profileDropdown');
+		dropdown.classList.toggle('show');
+	}
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.profile-dropdown img')) {
-        const dropdowns = document.getElementsByClassName('dropdown-content');
-        for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-            }
-        }
-    }
-}
+	// Close the dropdown if the user clicks outside of it
+	window.onclick = function(event) {
+		if (!event.target.matches('.profile-dropdown img')) {
+			const dropdowns = document.getElementsByClassName('dropdown-content');
+			for (let i = 0; i < dropdowns.length; i++) {
+				const openDropdown = dropdowns[i];
+				if (openDropdown.classList.contains('show')) {
+					openDropdown.classList.remove('show');
+				}
+			}
+		}
+	}
 
 
-// Function to handle the plus button click
-function plusButtonClick(id) {
-    let quantityInput = document.getElementById("quantity-input" + id);
-    console.log(quantityInput);
-    let quantity = Number(quantityInput.value) + 1;
-    
-    console.log(quantity);
-    quantityInput.value = quantity;
-}
+	// Function to handle the plus button click
+	function plusButtonClick(id) {
+		let quantityInput = document.getElementById("quantity-input" + id);
+		let quantity = Number(quantityInput.value) + 1;
+		quantityInput.value = quantity;
+		document.getElementById("quantity-value" + id).value = quantity;
+	}
     // Function to handle the minus button click
     function minusButtonClick(id) {
         let quantityInput = document.getElementById("quantity-input" + id);
-        console.log(quantityInput);
         let quantity = Number(quantityInput.value)-1;
-        console.log(quantity);
      
-        if (quantity > 1) {
-        	
-            quantityInput.value = quantity ;
+        if (quantity >= 1) {
+            quantityInput.value = quantity;
+			document.getElementById("quantity-value" + id).value = quantity;
         }
     }
-
-
-
 
     function redirectToCheckout(id, quantityLeft) {
         let quantityInput = document.getElementById("quantity-input" + id);
         var title = document.getElementById("title").innerText;
-        title = title.split(" ")[1];
         var author = document.getElementById("author").innerText;
         author = author.split(" ")[1];
         var price = document.getElementById("price").innerText;

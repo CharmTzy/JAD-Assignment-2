@@ -2,6 +2,12 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.Base64"%>
 <%@page import="java.sql.*"%>
+<%@ page import="java.util.Base64"%>
+<%@page import="java.io.*"%>
+<%@page import="model.Book"%>
+<%@page import="java.util.List"%>
+<%@ page import="java.util.ArrayList" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -233,9 +239,13 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		</ul>
 	</div>
 
+ <h1>Item Successfully Added to Cart</h1>
+    <p>Title: <%= session.getAttribute("title") %></p>
+    <p>Author: <%= session.getAttribute("author") %></p>
+    <p>ID: <%= session.getAttribute("id") %></p>
+    <p>Price: <%= session.getAttribute("price") %></p>
+    <p>Quantity: <%= session.getAttribute("quantity") %></p>
 
-
-  
 	<footer class="footer">
 		<div class="footer-container">
 			<div class="social-icons">
