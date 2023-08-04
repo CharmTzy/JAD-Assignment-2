@@ -2,6 +2,9 @@
 	pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.Base64"%>
 <%@page import="java.sql.*"%>
+<%@page import="model.Book"%>
+<%@page import="java.util.List"%>
+<%@ page import="java.util.ArrayList" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -116,8 +119,12 @@ body, html {
 
 .footer {
 	background-color: #222;
-	color: white;
-	padding: 10px;
+        color: #fff;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
 }
 
 .footer-container {
@@ -153,39 +160,87 @@ padding: 10px;
 }
 
 
+.container {
+	margin-top: 20px;
+}
 
+.books .card {
+	height: 650px;
+}
+
+.checkout-item {
+	display: flex;
+	align-items: center;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.checkout-item img {
+	flex-shrink: 0;
+	width: 150px;
+	height: 225px;
+	margin-right: 10px;
+	overflow: hidden;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.item-details {
+	display: flex;
+	flex-direction: column;
+}
+
+.item-details h3 {
+	margin-top: 0;
+	margin-bottom: 10px;
+}
+
+.item-details p {
+	margin: 0;
+	margin-bottom: 5px;
+}
+
+.subtotal,.tax,.real-total {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+/* Button Styles */
 .button {
-  cursor: pointer;
-  font-weight: 500;
-  left: 3px;
-  line-height: inherit;
-  position: relative;
-  text-decoration: none;
-  text-align: center;
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 3px;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  display: inline-block;
+	cursor: pointer;
+	font-weight: 500;
+	left: 3px;
+	line-height: inherit;
+	position: relative;
+	text-decoration: none;
+	text-align: center;
+	border-style: solid;
+	border-width: 1px;
+	border-radius: 3px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	display: inline-block;
+	margin-top:13px;
 }
 
 .button--small {
-  padding: 10px 20px;
-  font-size: 0.875rem;
+	padding: 10px 20px;
+	font-size: 0.875rem;
 }
 
 .button--green {
-  outline: none;
-  background-color: #64d18a;
-  border-color: #64d18a;
-  color: white;
-  transition: all 200ms ease;
+	outline: none;
+	background-color: #64d18a;
+	border-color: #64d18a;
+	color: white;
+	transition: all 200ms ease;
 }
 
 .button--green:hover {
-  background-color: #8bdda8;
-  color: white;
+	background-color: #8bdda8;
+	color: white;
 }
 </style>
 </head>
@@ -198,9 +253,24 @@ String loginStatus = (String) session.getAttribute("loginStatus");
 if ( CustomerID == null || !loginStatus.equals("success")){
 	response.sendRedirect("../Login.jsp?errCode=invalidLogin");
 }
+ArrayList<Book> cart = (ArrayList<Book>) session.getAttribute("cart");
+
+    // Calculate the total price
+    float subtotal = 0;
+    if (cart != null && !cart.isEmpty()) {
+        for (Book book : cart) {
+            subtotal += (book.getQuantity() * book.getPrice());
+        }
+    }
+    float gstRate = 0.08f; 
+    float gstAmount = subtotal * gstRate;
+    String formattedGstAmount = String.format("%.2f", gstAmount);
+	float realTotal = subtotal + gstAmount;
+	String formattedRealTotal = String.format("%.2f", realTotal);
 %>
+
 	<div class="navbar">
-		<h1>Hogwarts Library Checkout</h1>
+		<h1>Hogwart Library Checkout</h1>
 		<ul>
 			<li><a href="Guest.jsp"><i class="fas fa-home"></i>Home</a></li>
 			<li><a href="../Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
@@ -214,31 +284,36 @@ if ( CustomerID == null || !loginStatus.equals("success")){
  <div class="container">
         <div class="row">
         <div class="col-lg-6">
-               	<div id="dropin-container"></div>
+				<form action="<%=request.getContextPath()%>/checkout" method="post">
+               	<div id="dropin-container" ></div>
+             
 				<button id="submit-button" class="button button--small button--green">Purchase</button>
+				</form>
             </div>
+           
             <div class="col-lg-6">
                 <h2>Order Summary</h2>
-                <div class="order-item">
-                    <span class="item-label">Book Title:</span>
-                    <span class="item-value" id="book-title"><%= request.getParameter("bookId") %></span>
-                </div>
-                <div class="order-item">
-                    <span class="item-label">Author:</span>
-                    <span class="item-value" id="book-author"><%= request.getParameter("author") %></span>
-                </div>
-                <div class="order-item">
-                    <span class="item-label">Price:</span>
-                    <span class="item-value" id="book-price"><%= request.getParameter("price") %></span>
-                </div>
-                <div class="order-item">
-                    <span class="item-label">Quantity:</span>
-                    <span class="item-value" id="book-quantity"><%= request.getParameter("quantity") %></span>
-                </div>
-                <div class="order-item">
-                    <span class="item-label">Total:</span>
-                    <span class="item-value" id="order-total"></span>
-                </div>
+   
+            <% if (cart != null && !cart.isEmpty()) { %>
+                <% for (Book book : cart) { %>
+                    <div class="checkout-item">
+                        <img class="book-img" src="<%= book.getImage() %>">
+                        <div class="item-details">
+                            <h3>Title: <%= book.getTitle() %></h3>
+                            <p>ISBN: <%= book.getIsbn() %></p>
+                            <p>Author: <%= book.getAuthor() %></p>
+                            <p>Price: $<%= book.getPrice() %></p>
+                            <p>Quantity: <%= book.getQuantity() %></p>
+                            </div>
+                    </div>
+                <% } %>
+            <% } else { %>
+                <p>No items in the checkout.</p>
+            <% } %>
+            <p class="subtotal">Subtotal: 	$<%= subtotal %></p>
+			<p class="tax">GST (8%):	 $<%= formattedGstAmount %></p>
+			<p class="real-total">Total (including GST): $<%= formattedRealTotal %></p>
+        
             </div>
             
         </div>
@@ -278,27 +353,8 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 	    });
 	  })
 	});
-		 
-	function getCookie(cname) {
-		let name = cname + "=";
-		let decodedCookie = decodeURIComponent(document.cookie);
-		let ca = decodedCookie.split(';');
-		for(let i = 0; i < ca.length; i++) {
-			let c = ca[i];
-			while (c.charAt(0) == ' ') {
-			c = c.substring(1);
-			}
-			if (c.indexOf(name) == 0) {
-			return c.substring(name.length, c.length);
-			}
-		}
-		return "";
-	}
-
-	// example - just to test
 	
-	console.log(getCookie("bookId"));
-	console.log(getCookie("title"));
+
 	
 	</script>
 	

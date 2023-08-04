@@ -47,6 +47,11 @@
 			System.out.print("record found!");
 			found = true;
 			 role = rs.getString("role");
+			 int customerID = rs.getInt("id");
+		        // Store the customer ID in the session attribute
+			session.setAttribute("sessCustomerid", customerID);
+		    System.out.println(customerID);
+		        
 		} else {
 			//do nothing
 			System.out.print("record not found!");

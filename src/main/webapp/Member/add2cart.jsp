@@ -8,6 +8,7 @@
 <%@page import="java.util.List"%>
 <%@ page import="java.util.ArrayList" %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -121,11 +122,15 @@
 			margin: 0 5px;
 		}
 		
-		.footer {
-			background-color: #222;
-			color: white;
-			padding: 10px;
-		}
+		 .footer {
+        background-color: #222;
+        color: #fff;
+        padding: 10px;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+    }
 		
 		.footer-container {
 			display: flex;
@@ -147,7 +152,7 @@
 			margin: 0;
 		}
 		
-		/* Style the dropdown content */
+		
 		.dropdown-content {
 		    display: none;
 		    position: absolute;
@@ -163,7 +168,7 @@
 		    
 		}
 		
-		/* Style the links inside the dropdown */
+	
 		.dropdown-content a {
 		    color: #333;
 		    text-decoration: none;
@@ -174,7 +179,7 @@
 		.dropdown-content a i {
 		    margin-right: 5px; 
 		}
-		/* Change link color on hover */
+		
 		.dropdown-content a:hover {
 		    background-color: #f1f1f1;
 		}
@@ -182,12 +187,12 @@
 		
 		.profile-dropdown img {
 		
-		    border-radius: 50%; /* Make the image appear as a circle */
+		    border-radius: 50%; 
 		    
 		    
 		}
 		
-		/* Position the dropdown arrow caret icon */
+		
 		.profile-dropdown::after {
 		    
 		    font-family: "Font Awesome 5 Free";
@@ -203,7 +208,92 @@
 		    display: block;
 		}
 		
+		h1{
+		margin-left:40px;
+		}
+		
+	 	.cart-item {
+        display: flex;
+        align-items: center;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: 10px;
+        margin-bottom: 10px;
+    	}
+    	
+	 	.cart-item img {
+	        flex-shrink: 0;
+	        width: 300px;
+	        height: 450px; 
+	        margin-right: 10px;
+	        overflow: hidden;
+	        object-fit: cover;
+        	border-radius: 15px;
+        	margin-left:40px;
+	    }
+
+         .item-details {
+        display: flex;
+        flex-direction: column;
+        margin-left: 100px; 
+	    }
 	
+	    .item-details h3 {
+	        margin-top: 0;
+	        margin-bottom: 25px;
+	    }
+	
+	    .item-details p {
+	        margin: 0;
+	        margin-bottom: 24px;
+	    }
+	
+	    .total {
+	        font-weight: bold;
+	        font-size: 18px;
+	        margin-left: 40px;
+	    }
+	
+	    .delete-button {
+	        display: inline-block;
+	        padding: 5px 10px;
+	        background-color: #FF0000;
+	        color: #FFFFFF;
+	        text-decoration: none;
+	        border-radius: 4px;
+	        position: absolute;
+    		right: 40px;
+	    }
+	
+	    .delete-button:hover {
+	        background-color: #CC0000;
+	    }
+		
+		  .delete-button:hover {
+		    background-color: #CC0000;
+		  }
+		  .total-container {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        margin-top: 20px; 
+	    }
+	
+	    .total-text {
+	        margin: 0;
+	    }
+	
+	    .checkout-button {
+	        background-color: #D3A625;
+	        border: none;
+	        color: white;
+	        padding: 10px;
+	        border-radius: 4px;
+	        cursor: pointer;
+	        text-decoration: none;
+	        margin-right: 20px; 
+	    }
+        
 </style>
 </head>
 <body>
@@ -239,12 +329,44 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 		</ul>
 	</div>
 
- <h1>Item Successfully Added to Cart</h1>
-    <p>Title: <%= session.getAttribute("title") %></p>
-    <p>Author: <%= session.getAttribute("author") %></p>
-    <p>ID: <%= session.getAttribute("id") %></p>
-    <p>Price: <%= session.getAttribute("price") %></p>
-    <p>Quantity: <%= session.getAttribute("quantity") %></p>
+ <h1>Books Cart</h1>
+     <% 
+        ArrayList<Book> cart = (ArrayList<Book>) session.getAttribute("cart");
+        if(cart != null && !cart.isEmpty()) {
+            float total = 0;
+            for(int i = 0; i < cart.size(); i++) {
+            	out.println("<div class='cart-item'>");
+                out.println("<img class = 'book-img' src='"+cart.get(i).getImage()+"'>");
+                out.println("<div class='item-details'>");
+                out.println("<h3>Title: " + cart.get(i).getTitle() + "</h3>");
+                out.println("<p>ID: " + cart.get(i).getId() + "</p>");
+                out.println("<p>Author: " + cart.get(i).getAuthor() + "</p>");
+                out.println("<p>Price: $" + cart.get(i).getPrice() + "</p>");
+                out.println("<p>Quantity: " + cart.get(i).getIsbn() + "</p>");
+                out.println("<form action='"+request.getContextPath() + "/UpdateQuantityCart' method='post'>");
+                out.println("<input type='hidden' name='id' value='" + cart.get(i).getId() + "'>");
+                out.println("<div class='quantity'>");
+                out.println("<button id='minus-btn' class='minus-btn' type='submit' name='action' value='minus'>-</button>");
+                out.println("<input id='quantity-input" + cart.get(i).getId() + "' type='text' class='quantity-input' name='quantity' value='" + cart.get(i).getQuantity() + "'>");
+                out.println("<button id='plus-btn' class='plus-btn' type='submit' name='action' value='plus'>+</button>");
+                out.println("</div>");
+                out.println("</div>");
+                out.println("</form>");
+                
+                String deleteUrl = request.getContextPath() + "/DeleteCart?id=" + cart.get(i).getId();
+                out.println("<a href='" + deleteUrl + "' class='delete-button'><i class='fa fa-trash' aria-hidden='true'></i></a>");
+                out.println("</div>");
+                total += (cart.get(i).getQuantity() * cart.get(i).getPrice());
+            }
+            out.println("<div class='total-container'>");
+            out.println("<p class='total'>Total: $" + total + "</p>");
+            out.println("<a href='" + request.getContextPath() + "/Member/checkout.jsp' class='checkout-button'>Checkout</a>");
+            out.println("</div><br><br>");
+            
+        }
+    %>
+    
+	
 
 	<footer class="footer">
 		<div class="footer-container">

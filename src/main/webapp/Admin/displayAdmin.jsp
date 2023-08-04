@@ -1,514 +1,459 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-	pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.Base64"%>
-<%@page import="java.sql.*"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*"%>
+
 <!DOCTYPE html>
-<html>
-<head>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
-
-<title>Hogwart Library</title>
-<link rel="stylesheet"
-	href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-<style>
-body, html {
-	height: 100%;
-	margin: 0;
-}
-
-.navbar {
-	background-color: #222;
-	color: white;
-	padding: 10px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.navbar h1 {
-	color: #D3A625;
-	margin: 0;
-}
-
-.navbar ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-	display: flex;
-}
-
-.navbar ul li {
-	margin-left: 10px;
-}
-
-.navbar ul li a {
-	color: white;
-	text-decoration: none;
-	 display: flex; /* Use flex to align icon and text horizontally */
-    align-items: center; 
-    margin-right:20px;
-}
-
-.welcome {
-	background-image: url("../image/hogwarts_night.jpg");
-	height: 100%;
-	background-position: center;
-	background-repeat: no-repeat;
-	background-size: cover;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-}
-
-.content {
-	background-color: rgba(0, 0, 0, 0.7);
-	padding: 20px;
-	border-radius: 8px;
-	color: white;
-}
-
-.search-container {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin-top: 20px;
-}
-
-.search-input {
-	padding: 10px;
-	font-size: 16px;
-	border: none;
-	border-radius: 4px 0 0 4px;
-}
-
-.dropdown {
-	padding: 10px;
-	font-size: 16px;
-	border: none;
-	border-radius: 0 4px 4px 0;
-}
-
-.search-button {
-	background-color: #D3A625;
-	border: none;
-	color: white;
-	padding: 10px;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-.search-button i {
-	margin: 0 5px;
-}
-
-.footer {
-	background-color: #222;
-	color: white;
-	padding: 10px;
-}
-
-.footer-container {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.social-icons {
-	display: flex;
-}
-
-.icon {
-	color: white;
-	font-size: 20px;
-	margin-right: 10px;
-}
-
-.footer p {
-	margin: 0;
-}
-
-.books .card {
-	height: 650px;
-}
-
-
-
-.search-input {
-padding: 10px;
-  width: 300px;
-  font-size: 16px;
-}
-
-.quantity {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    justify-content: center;
-}
-
-.quantity-input {
-    width: 40px;
-    height: 30px;
-    text-align: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    margin: 0 5px;
-}
-
-.minus-btn,
-.plus-btn {
-    width: 30px;
-    height: 30px;
-    border: none;
-    background-color: #f1f1f1;
-    cursor: pointer;
-}
-
-.minus-btn:hover,
-.plus-btn:hover {
-    background-color: #ddd;
-}
-
-.cart {
-        display: inline-block;
-    }
-
-    .btn-primary {
-        margin-left: 50px; /* Adjust the value as needed */
-    }
-/* Style the dropdown content */
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    right: 0;
-    padding: 10px;
-    border-radius: 4px;
-    padding: 10px;
-    border-radius: 4px;	
-    
-}
-
-/* Style the links inside the dropdown */
-.dropdown-content a {
-    color: #333;
-    text-decoration: none;
-    display: block;
-    padding: 8px;
-    transition: background-color 0.3s;
-}
-.dropdown-content a i {
-    margin-right: 5px; /* Adjust the value to control the spacing */
-}
-/* Change link color on hover */
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-
-
-.profile-dropdown img {
-
-    border-radius: 50%;     
-}
-
-.profile-dropdown::after {
-    
-    font-family: "Font Awesome 5 Free";
-    font-weight: 900;
-    position: absolute;
-    right: 30px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 12px;
-}
-.show {
-    display: block;
-}
-
-
-</style>
-</head>
-<body>
-	
-<%
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>Simple Sidebar - Start Bootstrap Template</title>
+        <!-- Favicon-->
+        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <!-- Core theme CSS (includes Bootstrap)-->
+        <link href="css/styles.css" rel="stylesheet" />
+    </head>
+    <body>
+    <%
 
 String AdminID = (String) session.getAttribute("sessAdminID");
 String loginStatus = (String) session.getAttribute("loginStatus");
 if ( AdminID == null || !loginStatus.equals("success")){
 	response.sendRedirect("../Login.jsp?errCode=invalidLogin");
 }
+
 %>
-	<div class="navbar">
-		<h1>Hogwart Library Admin DashBoard</h1>
-		<ul>
-			<li><a href="./displayAdmin.jsp"><i class="fas fa-home"></i>Home</a></li>
-			<li><a href="./displayAdmin_User.jsp"><i class="fas fa-user"></i>Users</a></li>
-			<li><a href="mailto:wai71308@gmail.com"><i class="fas fa-comment-alt"></i>Contact</a></li>
-			
-			<li class="profile-dropdown">
-			    <img src="../image/default.png" width="35" height="35" onclick="toggleDropdown()">
-			    <div class="dropdown-content" id="profileDropdown" >
-			        <!-- Add the user's name or any other relevant information -->
-			        
-			        <a href="./updateAdmin.jsp" style = "color:black"><i class="fas fa-edit"></i>Edit Profile</a>
-			        <a href="#" style = "color:black"><i class="fas fa-image"></i>Change Avatar</a>
-			        <a href="../Login.jsp" style = "color:black"><i class="fas fa-sign-out-alt"></i>Log out</a>
-			    </div>
-			</li>
-			
-		</ul>
-	</div>
 
-	<div class="container-fluid welcome">
-		<div class="row">
-			<div class="col-lg-12 col-md-12 col-sm-12">
-				<div class="content">
-					<h2>Welcome to Hogwarts Library!</h2>
-					<p>Explore our vast collection of magical books and embark on a
-						journey of knowledge and adventure.</p>
-
-					<form method="get" action="displayAdmin.jsp">
-						<div class="search-container">
-							<input class="search-input" type="text" placeholder="Search By Title or Author"
-								name="search">
-
-							<button type="submit" class="search-button">
-								<i class="fas fa-search"></i> Search
-							</button>
-						</div>
-					</form>
-
-				</div>
-			</div>
-
-		</div>
-	</div>
-
-	<div class="container-fluid"
-		style="margin: auto; text-align: center; margin-top: 20px;">
-
-		<div class="row">
-			<%
-			String searchQuery = request.getParameter("search");
-			boolean hasResults = false;
-
-			try {
-				// Step 1: Load JDBC Driver
-				Class.forName("com.mysql.jdbc.Driver");
-
-				// Step 2: Define Connection URL
-				String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
-
-				// Step 3: Establish connection to URL
-				Connection conn = DriverManager.getConnection(connURL);
-
-				// Step 4: Create Statement object
-				Statement stmt = conn.createStatement();
-
-				// Step 5: Execute SQL Query
-				String sqlStr = "SELECT books.*, genre.genre FROM books INNER JOIN genre ON books.genre_id = genre.id";
-
-				// If search query is provided, modify the SQL query to filter results
-				if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-					sqlStr += " WHERE title LIKE '%" + searchQuery + "%' OR author LIKE '%" + searchQuery + "%'";
-				}
-
-				ResultSet rs = stmt.executeQuery(sqlStr);
-
-				// Step 6: Process Result
-				while (rs.next()) {
-					hasResults = true;
-					int id = rs.getInt("id");
-					String imagePath = rs.getString("image");
-					String imageUrl = "../image/" + imagePath;
-					String title = rs.getString("title");
-					String author = rs.getString("author");
-					double price = rs.getDouble("price");
-					int quantity = rs.getInt("quantity");
-					String publisher = rs.getString("publisher");
-					String publicationDate = rs.getString("publication_date");
-                    String isbn = rs.getString("isbn");
-                    String genre = rs.getString("genre");
-                    double rating = rs.getDouble("rating");
-                    String description = rs.getString("description");
-					
-			%>
-			<div class="col-lg-3 col-md-6 col-sm-12 books">
-				<div class="card" data-toggle="modal" data-target="#exampleModalCenter<%=rs.getString("id")%>">
-					<img class="card-img-top" src="<%=imageUrl%>" width="300"
-						height="500" alt="Book Image">
-					<div class="card-body">
-						<h5 class="card-title"><%=title%></h5>
-						<p class="card-text">
-							Author:
-							<%=author%></p>
-						<p class="card-text">
-							Price:
-							<%=price%></p>
-					</div>
-
-					 <div class="modal fade" id="exampleModalCenter<%=rs.getString("id")%>" role="dialog" aria-labelledby="exampleModalCenterTitle" data-backdrop="static" data-keyboard="false">
-					<script>
-					 var modal = document.getElementById('exampleModalCenter<%=rs.getString("id")%>');
-					    modal.addEventListener('click', function(event) {
-					        event.stopPropagation();
-					    });
-					    </script>
-				    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-				        <div class="modal-content">
-				            <div class="modal-header">
-				                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				                    <span aria-hidden="true">&times;</span>
-				                </button>
-				            </div>
-				            <div class="modal-body" >
-				                <div class="row">
-				                    <div class="col-lg-6">
-				                        <img class="card-img-top" src="<%=imageUrl%>" width="500" height="500" alt="Book Image">
-				                    </div>
-				                    <div class="col-lg-6">
-										
-										<form method="post" action="AddtoCartInput.jsp">
-											<h5 class="card-title" name="title"><%=title%></h5>
-											<p class="card-text" name="id" style="display: none;"><%=id%></p>
-											<p class="card-text d-inline">Author: </p>
-											<p class="card-text d-inline" name="author"><%=author%></p><br><br>
-											<p class="card-text d-inline">Price: </p>
-											<p class="card-text d-inline" name="price"><%=price%></p><br><br>
-											<p class="card-text d-inline"><%=quantity%></p>
-											<p class="card-text d-inline" name="quantity">&nbsp;Books Left</p><br><br>
-											<p class="card-text">Publisher: <%=publisher%></p>
-											<p class="card-text">Publishing Date: <%=publicationDate%></p>
-											<p class="card-text">ISBN: <%=isbn%></p>
-											<p class="card-text">Rating: <%=rating%></p>
-											<p class="card-text">Description: <%=description%></p>
-											<p class="card-text">Genre:  <%=genre%></p>
-											
-											<div class="quantity">
-												<button id="minus-btn" class="minus-btn" onclick="minusButtonClick(<%= id %>)" type="button">-</button>
-												<input id="quantity-input<%= id %>" type="text" class="quantity-input" value="1">
-												<button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
-											</div>
-										</form>
-				                    </div>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-
-
-				</div>
-			</div>
-
-			<%
-			}
-
-				
-			// Step 7: Close connection
-			rs.close();
-			stmt.close();
-			conn.close();
-
-			} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			} catch (SQLException e) {
-			e.printStackTrace();
-			}
-
-			if (!hasResults) {
-			%>
-			<p>No books found.</p>
-			<%
-			}
-			%>
-		</div>
-
-	</div>
-
-
-
-	<footer class="footer">
-		<div class="footer-container">
-			<div class="social-icons">
-				<a href="https://www.facebook.com/profile.php?id=100025060720474"
-					class="icon"><i class="fab fa-facebook"></i></a> <a
-					href="https://www.instagram.com/stay_free04/" class="icon"><i
-					class="fab fa-instagram"></i></a> <a href="mailto:wai71308@gmail.com"
-					class="icon"><i class="far fa-envelope"></i></a> <a
-					href="https://github.com/CharmTzy/JAD-Assignment-2" class="icon"><i
-					class="fab fa-github"></i></a>
-			</div>
-			<div class="img-footer">
-			<img src="../image/SP.png" width="110" height="40">
-			</div>
-			<p>&copy; 2023 Hogwarts Library. All rights reserved.</p>
-		</div>
-	</footer>
-
-<script>
-
-function toggleDropdown() {
-    const dropdown = document.getElementById('profileDropdown');
-    dropdown.classList.toggle('show');
+<style>
+        
+        .container {
+		  display: flex;
+		  align-items: center;
+		}
+        
+        h1 {
+            color: #333;
+             display: inline-block;
+        }
+        h2 {
+            color: #666;
+            margin-top: 50px;
+        }
+        form {
+            margin-top: 20px;
+            margin-left: 20px;
+        }
+        label {
+            display: inline-block;
+            width: 200px;
+        }
+         input[type="file"],
+        textarea {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+            margin-left:10px;
+        }
+        input[type="text"],
+        textarea {
+            width: 300px;
+            padding: 5px;
+            margin-bottom: 10px;
+            margin-left:10px;
+        }
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            cursor: pointer;
+            margin-top:20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        p {
+            color: #999;
+        }
+        .description-field {
+        display: flex;  
+        align-items: center;
+        }
+        .description-field textarea {
+        margin-left: 15px;
+        }
+        .quantity-buttons {
+		  display: flex;
+		  align-items: center;
+		}
+		 .button-group {
+		  display: flex;
+		  flex-direction: column;
+		}
+		.quantity-buttons form {
+		  margin-right: 10px;
+		}
+		
+		.quantity-value {
+		  margin: 0 10px;
+		}
+		
+		.quantity-button.plus {
+		  margin-bottom: 10px;
+		}
+		
+		.quantity-button.minus {
+		  margin-bottom: 10px;
+		  
+		}
+		.value-field{
+		margin-top:10px;
+		width: 40px;
+		}
+		
+	  .role {
+	    display: flex;
+	    align-items: center;
+	   
+	  }
+	
+	  .role a {
+	    display: flex;
+	    justify-content: center;
+	    width: 50px;
+	    border-radius: 5px;
+	  }
+	
+	  .slider-container {
+	    display: none;
+	    padding: 20px;
+	    background-color: #f2f2f2;
+	    margin-top: 50px;
+	    position: absolute;
+	  }
+	  .update-profile-btn,
+	  .logout-btn {
+	    display: inline-block;
+	    padding: 10px 20px;
+	    background-color: #4caf50;
+	    color: #fff;
+	    text-decoration: none;
+	    border-radius: 4px;
+	    font-size: 14px;
+	    margin-right: 10px;
+	  }
+	
+	  .update-profile-btn:hover,
+	  .logout-btn:hover {
+	    background-color: #45a049;
+	  }
+	  
+	  .input-field {
+    width: 300px;
+    padding: 5px;
+    margin-bottom: 10px;
 }
+	  
+    </style>
+        <div class="d-flex" id="wrapper">
+            <!-- Sidebar-->
+            <div class="border-end bg-white" id="sidebar-wrapper">
+                <div class="sidebar-heading border-bottom bg-light">Hogwart Library</div>
+                <div class="list-group list-group-flush">
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./displayAdmin.jsp">Dashboard</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./saleManagement.jsp">Sale Management</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+                </div>
+            </div>
+            <!-- Page content wrapper-->
+            <div id="page-content-wrapper">
+                <!-- Top navigation-->
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                    <div class="container-fluid">
+                        <button class="btn btn-primary" id="sidebarToggle">Toggle Menu</button>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
+                                <li class="nav-item active"><a class="nav-link" href="./displayAdmin.jsp">Home</a></li>
+                                <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                                        <a class="dropdown-item" href="#!">Action</a>
+                                        <a class="dropdown-item" href="#!">Another action</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#!">Something else here</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </nav>
+                <!-- Page content-->
+                <div class="container-fluid">
+                      
+    <h1>Admin Dashboard</h1>
+ 
 
-// Close the dropdown if the user clicks outside of it
-window.onclick = function(event) {
-    if (!event.target.matches('.profile-dropdown img')) {
-        const dropdowns = document.getElementsByClassName('dropdown-content');
-        for (let i = 0; i < dropdowns.length; i++) {
-            const openDropdown = dropdowns[i];
-            if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
+    <%-- Create a new book form --%>
+    <h2>Create a new book:</h2>
+    <form method="post" action="<%= request.getContextPath() %>/UploadBook" enctype="multipart/form-data">
+    	<label>Image:</label>
+	    <input type="file" name="image" accept="image/*" required><br><br>
+        <label>Title:</label>
+        <input type="text" name="title" required><br><br>
+        <label>Author:</label>
+        <input type="text" name="author" required><br><br>
+        <label>Price:</label>
+        <input type="text" name="price" required><br><br>
+        <label>Quantity:</label>
+        <input type="text" name="quantity" required><br><br>
+        <label>Publisher:</label>
+        <input type="text" name="publisher" required><br><br>
+        <label>Publication Date:</label>
+        <input type="text" name="publicationDate" required><br><br>
+        <label>ISBN:</label>
+        <input type="text" name="isbn" required><br><br>
+        <label>Genre:</label>
+        <input type="text" name="genre" required><br><br>
+        <label>Rating:</label>
+        <input type="text" name="rating" required><br><br>
+        <div class="description-field">
+        <label for="description">Description:</label>
+           <textarea name="description" id="description" required></textarea>
+        </div>
+        <input type="submit" value="Create">
+    </form>
+
+	
+
+
+<%-- Display existing books --%>
+<h2>Existing books:</h2>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Inventory</th>
+        <th>Actions</th>
+        
+    </tr>
+    <%
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        Connection conn = DriverManager.getConnection(connURL);
+        Statement stmt = conn.createStatement();
+
+        String sqlStr = "SELECT * FROM books";
+        ResultSet rs = stmt.executeQuery(sqlStr);
+
+        while (rs.next()) {
+            String bookId = rs.getString("id");
+            String title = rs.getString("title");
+            String author = rs.getString("author");
+            int inventory = rs.getInt("quantity");
+    %>
+    <tr>
+        <td><%= title %></td>
+        <td><%= author %></td>
+        <td>
+            <div class="quantity-buttons">
+            
+                <form method="post" action="displayAdmin.jsp">
+                    <input type="hidden" name="bookId" value="<%= bookId %>">
+                    <input type="hidden" name="currentInventory" value="<%= inventory %>">
+                    <button class="quantity-button plus" type="submit" name="addQuantity">+</button>
+                </form>
+                <div class="value-field">
+                <span class="quantity-value"><%= inventory %></span>
+              </div>
+                <div class="button-group">
+                <form method="post" action="displayAdmin.jsp">
+                    <input type="hidden" name="bookId" value="<%= bookId %>">
+                    <input type="hidden" name="currentInventory" value="<%= inventory %>">
+                    <button class="quantity-button minus" type="submit" name="reduceQuantity">-</button>
+                </form>
+                  </div>
+            </div>
+        </td>
+        <td>
+            <a href="editBookForm.jsp?bookId=<%= bookId %>"><button>Edit</button></a>
+            <a href="deleteBook.jsp?bookId=<%= bookId %>"><button>Delete</button></a>
+        </td>
+        
+    </tr>
+    <% }
+        conn.close();
+    } catch (Exception e) {
+        out.println("Error: " + e);
+    }
+
+    // Update book quantity
+    if (request.getParameter("addQuantity") != null || request.getParameter("reduceQuantity") != null) {
+        String bookId = request.getParameter("bookId");
+        int currentInventory = Integer.parseInt(request.getParameter("currentInventory"));
+
+        int newInventory = currentInventory;
+        if (request.getParameter("addQuantity") != null) {
+            newInventory++;
+        } else if (request.getParameter("reduceQuantity") != null) {
+            newInventory--;
+            if (newInventory < 0) {
+                newInventory = 0;
             }
         }
-    }
-}
 
-
-// Function to handle the plus button click
-function plusButtonClick(id) {
-    let quantityInput = document.getElementById("quantity-input" + id);
-    console.log(quantityInput);
-    let quantity = Number(quantityInput.value) + 1;
-    
-    console.log(quantity);
-    quantityInput.value = quantity;
-}
-    // Function to handle the minus button click
-    function minusButtonClick(id) {
-        let quantityInput = document.getElementById("quantity-input" + id);
-        console.log(quantityInput);
-        let quantity = Number(quantityInput.value)-1;
-        console.log(quantity);
-     
-        if (quantity >= 1) {
-        	
-            quantityInput.value = quantity ;
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+            Connection conn = DriverManager.getConnection(connURL);
+            PreparedStatement pstmt = conn.prepareStatement("UPDATE books SET quantity = ? WHERE id = ?");
+            pstmt.setInt(1, newInventory);
+            pstmt.setString(2, bookId);
+            pstmt.executeUpdate();
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            out.println("Error: " + e);
+        } catch (SQLException e) {
+            out.println("Error: " + e);
         }
     }
+    
+    %>
+    
+</table>
+
+<h2>Create a new user:</h2>
+<form method="post" action="displayAdmin.jsp">
+    <label>Username:</label>
+    <input type="text" name="username" class="input-field" required><br><br>
+    <label>Email:</label>
+    <input type="email" name="email" class="input-field" required><br><br>
+    <label>Password:</label>
+    <input type="password" name="password" class="input-field" required><br><br>
+    <label>Phone number:</label>
+    <input type="text" name="phoneNumber" class="input-field" required><br><br>
+    <input type="submit" value="Create">
+</form>
+
+
+<%-- Insert new user data into the database --%>
+<%
+    
+    if (request.getParameter("username") != null) {
+        // Retrieve form field values
+        String username = request.getParameter("username");
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String phoneNumber = request.getParameter("phoneNumber");
+        String role = "member";
+        
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC&useSSL=false";
+            Connection conn = DriverManager.getConnection(connURL);
+            PreparedStatement pstmt = conn.prepareStatement("INSERT INTO user (username, email, password, phnumber, role) VALUES (?, ?, ?, ?, ?)");
+            pstmt.setString(1, username);
+            pstmt.setString(2, email);
+            pstmt.setString(3, password);
+            pstmt.setString(4, phoneNumber);
+            pstmt.setString(5, role);
+            
+            pstmt.executeUpdate();
+            pstmt.close();
+            conn.close();
+        } catch (ClassNotFoundException e) {
+            out.println("Error: " + e);
+        } catch (SQLException e) {
+            out.println("Error: " + e);
+        } 
+        
+    }
+%>
 
 
 
-</script>
+<h2>Existing members:</h2>
+<table>
+    <tr>
+        <th>Member ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    <%
+    try {
+        Class.forName("com.mysql.jdbc.Driver");
+        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        Connection conn = DriverManager.getConnection(connURL);
+        Statement stmt = conn.createStatement();
 
-</body>
+        String sqlStr = "SELECT * FROM user WHERE role='member'";
+        ResultSet rs = stmt.executeQuery(sqlStr);
 
+        while (rs.next()) {
+            int memberId = rs.getInt("id");
+            String name = rs.getString("username");
+            String email = rs.getString("email");
+    %>
+    <tr>
+        <td><%= memberId %></td>
+        <td><%= name %></td>
+        <td><%= email %></td>
+        <td>
+            <a href="editMember.jsp?memberId=<%= memberId %>"><button>Edit</button></a>
+            <a href="deleteMember.jsp?memberId=<%= memberId %>"><button>Delete</button></a>
+        </td>
+    </tr>
+    <% }
+        conn.close();
+    } catch (Exception e) {
+        out.println("Error: " + e);
+    }
+    %>
+</table>
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap core JS-->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Core theme JS-->
+        <script src="js/scripts.js"></script>
+        <script>
+        window.addEventListener('DOMContentLoaded', event => {
+
+            // Toggle the side navigation
+            const sidebarToggle = document.body.querySelector('#sidebarToggle');
+            if (sidebarToggle) {
+                // Uncomment Below to persist sidebar toggle between refreshes
+                // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+                //     document.body.classList.toggle('sb-sidenav-toggled');
+                // }
+                sidebarToggle.addEventListener('click', event => {
+                    event.preventDefault();
+                    document.body.classList.toggle('sb-sidenav-toggled');
+                    localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                });
+            }
+
+        });
+        </script>
+    </body>
 </html>

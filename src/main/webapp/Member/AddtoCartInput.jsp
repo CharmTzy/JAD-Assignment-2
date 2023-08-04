@@ -1,3 +1,4 @@
+<%@page import="model.Book"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="java.util.*"%>
 <!DOCTYPE html>
@@ -9,10 +10,12 @@
 <body>
     <%@ page import="java.sql.*"%>
     <%
+    String image = request.getParameter("image");
     String title = request.getParameter("title");
     String author = request.getParameter("author");
     String idParam = request.getParameter("id");
     String priceParam = request.getParameter("price");
+    String isbn = request.getParameter("isbn");
     String quantityParam = request.getParameter("quantity");
 
     // Initialize integer variables to hold the parsed values
@@ -41,13 +44,49 @@
         }
 
         HttpSession cartsession = request.getSession();
+        cartsession.setAttribute("image",image);
         cartsession.setAttribute("title", title);
         cartsession.setAttribute("id", id);
         cartsession.setAttribute("author", author);
         cartsession.setAttribute("price", price);
+        cartsession.setAttribute("isbn", isbn);
         cartsession.setAttribute("quantity", quantity);
-
-
+		
+		ArrayList<Book> Test = (ArrayList<Book>)cartsession.getAttribute("cart");
+		boolean condition = true;
+		if(Test != null && !Test.isEmpty()) {
+			for(int i = 0; i < Test.size(); i++) {
+				if(Test.get(i).getId() == id) {
+					condition = false;
+					Test.get(i).setQuantity(quantity + Test.get(i).getQuantity());
+					break;
+				}
+			}
+			if(condition){ 
+				Book book = new Book();
+				book.setImage(image);
+				book.setId(id);
+				book.setTitle(title);
+				book.setAuthor(author);
+				book.setPrice(price);
+				book.setIsbn(isbn);
+				book.setQuantity(quantity);
+				Test.add(book);
+			}
+		}
+		else {
+			Test = new ArrayList<Book>();
+			Book book = new Book();
+			book.setImage(image);
+			book.setId(id);
+			book.setTitle(title);
+			book.setAuthor(author);
+			book.setPrice(price);
+			book.setIsbn(isbn);
+			book.setQuantity(quantity);
+			Test.add(book);
+		}
+		cartsession.setAttribute("cart", Test);
         response.sendRedirect("./displayMember.jsp");
     } catch (NumberFormatException e) {
         // Handle the exception gracefully (e.g., display an error message)

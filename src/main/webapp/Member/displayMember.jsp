@@ -407,10 +407,12 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 												<input id="quantity-input<%= id %>" type="text" class="quantity-input"  value="1">
 												<button id="plus-btn" class="plus-btn" onclick="plusButtonClick(<%= id %>)" type="button">+</button>
 											</div>
-											<form method="post" action="AddtoCartInput.jsp" class="d-inline">
+											<form method="post" action="AddtoCartInput.jsp" class="d-inline" onsubmit="return addToCart(<%=id%>, <%=quantity%>)">
+												<input type="text" name="image" value="<%=imageUrl %>" style="display:none;">
 												<input type="text" name="title" value="<%=title%>" style="display: none;">
 												<input type="text" name="id" value="<%=id%>" style="display: none;">
 												<input type="text" name="author" value="<%=author%>" style="display: none;">
+												<input type="text" name="isbn" value="<%=isbn%>" style="display: none;">
 												<input type="text" name="price" value="<%=price%>" style="display: none;">
 												<input type="text" name="quantity" id="quantity-value<%= id %>" value="1" style="display: none;">
 												
@@ -418,8 +420,8 @@ if ( CustomerID == null || !loginStatus.equals("success")){
 													<button type="submit"><i class="fas fa-shopping-cart"></i></button>
 												</div>
 											</form>
-											<button type="button" class="btn btn-primary" onclick="redirectToCheckout(<%= id %>,<%= quantity %>)">Buy Now </button>
-											<p id="error-message<%=id%>"></p>
+											
+											<p id="error-message<%=id%>" style="color: red; text-align: center; display: none;">Not enough number of books</p>
 				                    </div>
 				                </div>
 				            </div>
@@ -515,22 +517,24 @@ if ( CustomerID == null || !loginStatus.equals("success")){
         }
     }
 
-    function redirectToCheckout(id, quantityLeft) {
+    function addToCart(id, quantityLeft) {
         let quantityInput = document.getElementById("quantity-input" + id);
-        var title = document.getElementById("title").innerText;
-        var author = document.getElementById("author").innerText;
-        author = author.split(" ")[1];
-        var price = document.getElementById("price").innerText;
-        price = price.split(" ")[1];
-        var quantity = quantityInput.value;
-        // Compare quantity input with quantity left
-        if (parseInt(quantityInput.value) <= quantityLeft) {
-            // Redirect the user to the checkout page with the book information as query parameters
-            document.cookie = "bookId=" + id + "; title=" + encodeURIComponent(title) + "; author=" + encodeURIComponent(author) + "; price=" + price + "; quantity=" + quantityInput.value;
-            window.location.href = "<%= request.getContextPath() %>/Member/checkout.jsp";
-            console.log(document.cookie);
-        }else{
-        	document.getElementById("error-message"+id).innerHTML = "<h5 style='color: red; text-align: center;'>Not enough number of books</h1>";
+        var quantity = parseInt(quantityInput.value);
+
+        if (quantity <= quantityLeft) {
+            // Hide the error message when the quantity is valid
+            var errorMessage = document.getElementById("error-message" + id);
+            errorMessage.style.display = "none";
+
+            // Submit the form when the quantity is valid
+            document.querySelector('form').submit();
+        } else {
+            // Show the error message
+            var errorMessage = document.getElementById("error-message" + id);
+            errorMessage.style.display = "block";
+            
+            // Prevent form submission when the quantity is invalid
+            event.preventDefault();
         }
     }
 

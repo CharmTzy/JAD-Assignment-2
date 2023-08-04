@@ -284,7 +284,7 @@ if ( CustomerID == null || !loginStatus.equals("success")){
         <%
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC&useSSL=false";
+            String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
             Connection conn = DriverManager.getConnection(connURL);
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * FROM genre");

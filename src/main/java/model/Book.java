@@ -2,20 +2,44 @@ package model;
 
 public class Book {
 
+private String image;
 private int id;
 private String title;
 private String author;
 private float price;
+private String isbn;
 private int quantity;
 
-public Book(int id, String title, String author, float price,int quantity) {
-	super();
-	id = id;
-	title = title;
-	author = author;
-	price = price;
-	quantity = quantity;
+public Book() {
+	
 }
+
+public Book(String image,int id, String title, String author, float price,String isbn,int quantity) {
+	this.image = image;
+	this.id = id;
+    this.title = title;
+    this.author = author;
+    this.price = price;
+    this.isbn = isbn;
+    this.quantity = quantity;
+}
+
+public String getIsbn() {
+	return isbn;
+}
+
+public void setIsbn(String isbn) {
+	this.isbn = isbn;
+}
+
+public String getImage() {
+	return image;
+}
+
+public void setImage(String image) {
+	this.image = image;
+}
+
 public int getId() {
 	return id;
 }
