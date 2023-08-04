@@ -2,8 +2,9 @@
 <%@ page import="java.sql.*"%>
 <%@page import = "dbaccess.*" %>
 <%@page import = "java.util.ArrayList" %>
-
+<%@ page import="dbaccess.*" %>
 <%@page import = "java.util.Iterator" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +13,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Simple Sidebar - Start Bootstrap Template</title>
+        <title>Sale Management</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -72,7 +73,11 @@ if ( AdminID == null || !loginStatus.equals("success")){
                 </nav>
                 <!-- Page content-->
                 <div class="container-fluid">
-                <table>
+                <h5><%=request.getRequestURI() %></h5>
+                <form action="<%= request.getContextPath() %>/GetSaleList" method="get">
+                <input type = "submit" value = "List All Users">
+   
+				    <table border="1">
 				        <thead>
 				            <tr>
 				                <th>Order ID</th>
@@ -86,11 +91,8 @@ if ( AdminID == null || !loginStatus.equals("success")){
 				            </tr>
 				        </thead>
 				        <tbody>
-				            <%@ page import="dbaccess.Sale" %>
-				            <%@ page import="java.util.ArrayList" %>
-				            <% ArrayList<Sale> saleList = (ArrayList<Sale>) request.getAttribute("saleArray"); 
-				            out.println(saleList);%>
-				            <% if (saleList != null) { %>
+				            <% ArrayList<Sale> saleList = (ArrayList<Sale>) request.getAttribute("saleArray"); %>
+				            <% if (saleList != null && !saleList.isEmpty()) { %>
 				                <% for (Sale sale : saleList) { %>
 				                    <tr>
 				                        <td><%= sale.getOrder_id() %></td>
@@ -110,14 +112,15 @@ if ( AdminID == null || !loginStatus.equals("success")){
 				            <% } %>
 				        </tbody>
 				    </table>
+				     </form>
                 </div>
             </div>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-        <!-- Core theme JS-->
-        <script src="js/scripts.js"></script>
+        
         <script>
+     
         window.addEventListener('DOMContentLoaded', event => {
 
             // Toggle the side navigation
@@ -135,6 +138,7 @@ if ( AdminID == null || !loginStatus.equals("success")){
             }
 
         });
+        
         </script>
     </body>
 </html>

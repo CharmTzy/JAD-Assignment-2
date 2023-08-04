@@ -34,56 +34,40 @@ public class GetSaleList extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		//response.getWriter().append("Served at: ").append(request.getContextPath());
-		PrintWriter out = response.getWriter();
-		
-		Client client = ClientBuilder.newClient();
-		String restUrl = "http://localhost:8081/user-ws/getAllSale";
-		WebTarget target = client.target(restUrl);
-		Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
-		Response resp = invocationBuilder.get();
-		System.out.println("status:"+resp.getStatus());
-		
-		if(resp.getStatus() == Response.Status.OK.getStatusCode()) {
-			System.out.println("Success");
-			
-			ArrayList<Sale> al = resp.readEntity(new GenericType<ArrayList<Sale>>() {});
-			for(Sale sale :al) {
-				System.out.println(sale.getOrder_id());
-				
-				 request.setAttribute("saleArray", al);
-			        System.out.println("...requestObj set...forwarding...");
-			        System.out.println(al);
-			        String url = "Admin/saleManagement.jsp";
-			        RequestDispatcher rd = request.getRequestDispatcher(url);
-			        rd.forward(request, response);
-		        
-			}
-			request.setAttribute("saleArray", al);
-			System.out.println("...requestObj set...forwarding...");
-			String url = "Admin/saleManagement.jsp";
-			RequestDispatcher rd = request.getRequestDispatcher(url);
-			
-		}else {
-			System.out.println("failed");
-			String url = "Admin/saleManagement.jsp";
-			request.setAttribute("err", "NotFound");
-			RequestDispatcher rd = request.getRequestDispatcher(url);
-		}
-	}
-	
-	
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
 
+        Client client = ClientBuilder.newClient();
+        String restUrl = "http://localhost:8081/user-ws/getAllSale";
+        WebTarget target = client.target(restUrl);
+        Invocation.Builder invocationBuilder = target.request(MediaType.APPLICATION_JSON);
+        Response resp = invocationBuilder.get();
+        System.out.println("status:" + resp.getStatus());
+
+        if (resp.getStatus() == Response.Status.OK.getStatusCode()) {
+            System.out.println("Success");
+
+            ArrayList<Sale> saleList = resp.readEntity(new GenericType<ArrayList<Sale>>() {});
+            for (Sale sale : saleList) {
+                System.out.println(sale.getOrder_id());
+            }
+
+            request.setAttribute("saleArray", saleList);
+            System.out.println("...requestObj set...forwarding...");
+            String url = "Admin/saleManagement.jsp";
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+           
+            
+        } else {
+            System.out.println("failed");
+            String url = "Admin/saleManagement.jsp";
+            request.setAttribute("err", "NotFound");
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
+        }
+    }
+
+	
+	
 }
