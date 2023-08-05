@@ -246,9 +246,10 @@
 <%
 
 String CustomerID = (String) session.getAttribute("sessCustomerID");
+String userRole = (String) session.getAttribute("role");
 String loginStatus = (String) session.getAttribute("loginStatus");
-
-if ( CustomerID == null || !loginStatus.equals("success")){
+System.out.println((String) session.getAttribute("role"));
+if ( CustomerID == null || !userRole.equals("member") || !loginStatus.equals("success")){
 	response.sendRedirect("../Login.jsp?errCode=invalidLogin");
 }
 %>

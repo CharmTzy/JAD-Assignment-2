@@ -81,8 +81,10 @@
 <%
 
 String AdminID = (String) session.getAttribute("sessAdminID");
+String userRole = (String) session.getAttribute("role");
 String loginStatus = (String) session.getAttribute("loginStatus");
-if (AdminID == null || !loginStatus.equals("success")) {
+System.out.println((String) session.getAttribute("role"));
+if (AdminID == null ||  !userRole.equals("admin") || loginStatus == null || !loginStatus.equals("success")) {
     response.sendRedirect("../Login.jsp?errCode=invalidLogin");
 }else {
 	String email = "";

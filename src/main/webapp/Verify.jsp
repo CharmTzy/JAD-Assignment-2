@@ -50,6 +50,7 @@
 			 int customerID = rs.getInt("id");
 		        // Store the customer ID in the session attribute
 			session.setAttribute("sessCustomerid", customerID);
+			session.setAttribute("role",role);
 		    System.out.println(customerID);
 		        
 		} else {
@@ -65,8 +66,10 @@
 
 	if (found) {
 		//--------------Store values to the Session Object------------
+		
 		session.setAttribute("sessAdminID", username);
 		session.setAttribute("sessCustomerID", username);
+		
 		session.setAttribute("loginStatus", "success");
 		session.setMaxInactiveInterval(6000); //to set valid time for the session , in this case 60sec
 
@@ -77,6 +80,7 @@
         } 
 	} else {
 		response.sendRedirect("Login.jsp?errCode=invalidLogin");
+		session.invalidate();
 	}
 	%>
 

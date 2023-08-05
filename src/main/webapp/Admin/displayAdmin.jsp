@@ -18,10 +18,13 @@
     <%
 
 String AdminID = (String) session.getAttribute("sessAdminID");
-String loginStatus = (String) session.getAttribute("loginStatus");
-if ( AdminID == null || !loginStatus.equals("success")){
-	response.sendRedirect("../Login.jsp?errCode=invalidLogin");
-}
+    String userRole = (String) session.getAttribute("role");
+    String loginStatus = (String) session.getAttribute("loginStatus");
+    System.out.println((String) session.getAttribute("role"));
+    if (AdminID == null ||  !userRole.equals("admin") || loginStatus == null || !loginStatus.equals("success")) {
+        response.sendRedirect("../Login.jsp?errCode=invalidLogin");
+    }
+
 
 %>
 
