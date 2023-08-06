@@ -92,7 +92,7 @@ if (AdminID == null ||  !userRole.equals("admin") || loginStatus == null || !log
     String phnumber = "";
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         String sql = "SELECT email, address, phnumber FROM user WHERE username = ?";
@@ -148,7 +148,7 @@ if (AdminID == null ||  !userRole.equals("admin") || loginStatus == null || !log
 
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
 
         String sql = "UPDATE user SET email = ?, address = ?, phnumber = ? WHERE username = ?";

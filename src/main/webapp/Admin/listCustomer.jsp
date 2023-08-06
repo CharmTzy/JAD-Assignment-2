@@ -1,7 +1,8 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@page import="java.util.List" %>
-<%@page import="model.Book" %>
-<%@page import="dbaccess.BookDAO" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
+<%@ page import="dbaccess.User" %>
+<%@ page import="dbaccess.CustomerDAO" %>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -10,25 +11,67 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Least Selling</title>
+        <title>List Customer By Street Code</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+   
     <style>
-        /* Inline CSS for demonstration purposes */
         body {
             font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
             padding: 20px;
         }
 
         h1 {
-            margin-bottom: 20px;
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="submit"] {
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+        p {
+            text-align: center;
+            color: #555;
         }
 
         table {
-            border-collapse: collapse;
             width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
         }
 
         th, td {
@@ -41,13 +84,13 @@
             background-color: #f2f2f2;
         }
 
-        tr:hover {
+        tr:nth-child(even) {
             background-color: #f2f2f2;
         }
     </style>
 </head>
 <body>
- <%
+<%
 
 String AdminID = (String) session.getAttribute("sessAdminID");
     String userRole = (String) session.getAttribute("role");
@@ -59,7 +102,8 @@ String AdminID = (String) session.getAttribute("sessAdminID");
 
 
 %>
-        <div class="d-flex" id="wrapper">
+
+<div class="d-flex" id="wrapper">
             <!-- Sidebar-->
             <div class="border-end bg-white" id="sidebar-wrapper">
                 <div class="sidebar-heading border-bottom bg-light">Hogwart Library</div>
@@ -96,59 +140,75 @@ String AdminID = (String) session.getAttribute("sessAdminID");
                         </div>
                     </div>
                 </nav>
-<h1>Least Selling Books</h1>
-<% 
-        try {
-            int limit = 10; // Set the number of top-selling books to display
-
-            // Get the best selling books using the BookDAO
-            List<Book> leastSellingBooks = BookDAO.getLeastSellingBooks(limit);
+    <h1>List Customers by Street Code</h1>
+    
+    <form action="listCustomer.jsp" method="post">
+        <label for="streetCode">Enter Street Code:</label>
+        <input type="text" id="streetCode" name="streetCode">
+        <input type="submit" value="Get Members">
+    </form>
+    
+    <% 
+        String streetCode = request.getParameter("streetCode");
+        if (streetCode != null) {
+            try {
+                List<User> streetMembers = CustomerDAO.getMembersByStreet(streetCode);
+                if (streetMembers.isEmpty()) {
     %>
-
-    <% if (!leastSellingBooks.isEmpty()) { %>
+    <p>No member with street code <%= streetCode %>.</p>
+    <%
+                } else {
+    %>
     <table>
         <tr>
-            <th>Title</th>
-            <th>Author</th>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Address</th>
+            <th>Phone Number</th>
         </tr>
-        <% for (Book book : leastSellingBooks) { %>
+        
+        <% 
+            for (User user : streetMembers) {
+        %>
         <tr>
-            <td><%= book.getTitle() %></td>
-            <td><%= book.getAuthor() %></td>
-            
+            <td><%= user.getId() %></td>
+            <td><%= user.getUsername() %></td>
+            <td><%= user.getEmail() %></td>
+            <td><%= user.getAddress() %></td>
+            <td><%= user.getPhnumber() %></td>
         </tr>
-        <% } %>
+        <%
+            }
+        %>
     </table>
-    <% } else { %>
-    <p>No best selling books found.</p>
-    <% } %>
+    <%
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+    %>
+    <p>An error occurred while fetching data from the database.</p>
+    <%
+            }
+        }
+    %>
+    <script>
+    window.addEventListener('DOMContentLoaded', event => {
 
-    <% } catch (Exception e) { %>
-    <p>Error fetching least selling books: <%= e.getMessage() %></p>
-    <% } %>
+        // Toggle the side navigation
+        const sidebarToggle = document.body.querySelector('#sidebarToggle');
+        if (sidebarToggle) {
+            // Uncomment Below to persist sidebar toggle between refreshes
+            // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+            //     document.body.classList.toggle('sb-sidenav-toggled');
+            // }
+            sidebarToggle.addEventListener('click', event => {
+                event.preventDefault();
+                document.body.classList.toggle('sb-sidenav-toggled');
+                localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+            });
+        }
 
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<script>
-
-window.addEventListener('DOMContentLoaded', event => {
-
-    // Toggle the side navigation
-    const sidebarToggle = document.body.querySelector('#sidebarToggle');
-    if (sidebarToggle) {
-        // Uncomment Below to persist sidebar toggle between refreshes
-        // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-        //     document.body.classList.toggle('sb-sidenav-toggled');
-        // }
-        sidebarToggle.addEventListener('click', event => {
-            event.preventDefault();
-            document.body.classList.toggle('sb-sidenav-toggled');
-            localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
-        });
-    }
-
-});
-</script>
+    });</script>
 </body>
 </html>

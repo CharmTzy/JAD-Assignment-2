@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Simple Sidebar - Start Bootstrap Template</title>
+        <title>Admin Dashboard</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Core theme CSS (includes Bootstrap)-->
@@ -176,10 +176,10 @@ String AdminID = (String) session.getAttribute("sessAdminID");
                 <div class="list-group list-group-flush">
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./displayAdmin.jsp">Dashboard</a>
                     <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./saleManagement.jsp">Sale Management</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Overview</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Events</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Profile</a>
-                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!">Status</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./bestSelling.jsp">Best Selling Book</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./leastSelling.jsp">Least Selling Book</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./LowStockBook.jsp">Low Stock Book</a>
+                    <a class="list-group-item list-group-item-action list-group-item-light p-3" href="./listCustomer.jsp">Customer Residential</a>
                 </div>
             </div>
             <!-- Page content wrapper-->
@@ -192,7 +192,7 @@ String AdminID = (String) session.getAttribute("sessAdminID");
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul class="navbar-nav ms-auto mt-2 mt-lg-0">
                                 <li class="nav-item active"><a class="nav-link" href="./displayAdmin.jsp">Home</a></li>
-                                <li class="nav-item"><a class="nav-link" href="#!">Link</a></li>
+                                <li class="nav-item"><a class="nav-link" href="../Login.jsp">Logout</a></li>
                                 <li class="nav-item dropdown">
                                     <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
                                     <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -258,7 +258,7 @@ String AdminID = (String) session.getAttribute("sessAdminID");
     <%
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
         Statement stmt = conn.createStatement();
 
@@ -323,7 +323,7 @@ String AdminID = (String) session.getAttribute("sessAdminID");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+            String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
             Connection conn = DriverManager.getConnection(connURL);
             PreparedStatement pstmt = conn.prepareStatement("UPDATE books SET quantity = ? WHERE id = ?");
             pstmt.setInt(1, newInventory);
@@ -404,7 +404,7 @@ String AdminID = (String) session.getAttribute("sessAdminID");
     <%
     try {
         Class.forName("com.mysql.jdbc.Driver");
-        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+        String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
         Connection conn = DriverManager.getConnection(connURL);
         Statement stmt = conn.createStatement();
 
@@ -456,6 +456,11 @@ String AdminID = (String) session.getAttribute("sessAdminID");
             }
 
         });
+        var urlParams = new URLSearchParams(window.location.search);
+        var successParam = urlParams.get('success');
+        if (successParam === 'true') {
+            alert('Book inserted successfully!');
+        }
         </script>
     </body>
 </html>

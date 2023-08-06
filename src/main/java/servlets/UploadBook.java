@@ -134,7 +134,7 @@ public class UploadBook extends HttpServlet {
 						// Handle the error response if needed
 					}
 					
-					image = "http://s3.us-east-1.amazonaws.com/horwart-images-charmtzy/" + fileName;
+					image = "https://horwart-images-charmtzy.s3.amazonaws.com/book/" + fileName;
 		    }
 		    catch(Exception e) {
 		    	e.printStackTrace();
@@ -145,7 +145,7 @@ public class UploadBook extends HttpServlet {
 
 		    try {
 		        Class.forName("com.mysql.jdbc.Driver");
-		        String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC&useSSL=false";
+		        String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
 		        Connection conn = DriverManager.getConnection(connURL);
 		        
 		        // Step 1: Retrieve the genre ID based on the selected genre name
@@ -178,7 +178,7 @@ public class UploadBook extends HttpServlet {
 		        pstmt.executeUpdate();
 		        pstmt.close();
 		        conn.close();
-		        
+		        response.sendRedirect("Admin/displayAdmin.jsp?success=true");
 		    } catch (ClassNotFoundException e) {
 		        out.println("Error: " + e);
 		    } catch (Exception e) {

@@ -54,7 +54,7 @@ if (!isValid) {
 
 try {
     Class.forName("com.mysql.jdbc.Driver");
-    String connURL = "jdbc:mysql://localhost/book_db?user=JAD&password=root@123mml&serverTimezone=UTC";
+    String connURL = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
     Connection conn = DriverManager.getConnection(connURL);
     PreparedStatement pstmt = conn.prepareStatement("UPDATE user SET username = ?, email = ?, address = ?, phnumber = ? WHERE id = ?");
     pstmt.setString(1, name);

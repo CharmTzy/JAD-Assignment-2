@@ -267,6 +267,7 @@ if ( CustomerID == null || !userRole.equals("member") || !loginStatus.equals("su
 			<li><a href="./Member/displayMember.jsp"><i class="fas fa-home"></i>Home</a></li>
 			<li><a href="../Genre.jsp"><i class="fas fa-book"></i>Genre</a></li>
 			<li><a href="./add2cart.jsp"><i class="fas fa-shopping-cart"></i>Cart</a></li>
+			<li><a href="./displayOrder.jsp"><i class="fas fa-shopping-cart"></i>Order</a></li>
 			<li><a href="mailto:wai71308@gmail.com"><i class="fas fa-comment-alt"></i>Contact</a></li>
 			
 			<li class="profile-dropdown">
