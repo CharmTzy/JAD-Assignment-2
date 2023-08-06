@@ -355,7 +355,7 @@ ArrayList<Book> cart = (ArrayList<Book>) session.getAttribute("cart");
 	  })
 	});
 	
-
+	
 	
 	</script>
 	

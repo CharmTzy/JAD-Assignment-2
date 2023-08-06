@@ -541,9 +541,12 @@ if ( CustomerID == null || !userRole.equals("member") || !loginStatus.equals("su
 
 
 
-    function calculateTotal(price, quantity) {
-        // Calculate the total price based on the unit price and quantity
-        return parseFloat(price) * parseInt(quantity);
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderStatus = urlParams.get('orderStatus');
+
+    
+    if (orderStatus === 'true') {
+        alert('You have bought the books successfully!');
     }
 
 </script>

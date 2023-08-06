@@ -53,11 +53,11 @@ public class UpdateOrderStatusServlet extends HttpServlet {
         if (updated) {
             System.out.println("Order status updated successfully.");
             // Redirect back to the saleManagement.jsp after updating the status
-            response.sendRedirect("Admin/saleManagement.jsp");
+            response.sendRedirect("Admin/saleManagement.jsp?statusUpdated=true");
         } else {
             System.out.println("Failed to update order status.");
             // Handle the case when the update fails
-            String url = "errorPage.jsp";
+            String url = "Admin/saleManagement.jsp?statusUpdated=false";
             request.setAttribute("error", "Failed to update order status.");
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);

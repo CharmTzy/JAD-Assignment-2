@@ -100,7 +100,7 @@ public class CheckoutOrder extends HttpServlet {
                             // Set the success message in the request attribute to display on the page.
                             request.setAttribute("successMessage", successMessage);
                             
-                            response.sendRedirect("./Member/displayMember.jsp");
+                            response.sendRedirect("./Member/displayMember.jsp?orderStatus=true");
                             return;
                         }
                     }

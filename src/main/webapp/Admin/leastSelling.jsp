@@ -1,21 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<%@ page import="java.util.List" %>
-<%@ page import="model.Book" %>
-<%@ page import="dbaccess.BookDAO" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@page import="java.util.List" %>
+<%@page import="model.Book" %>
+<%@page import="dbaccess.BookDAO" %>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Best Selling Books</title>
+    <meta charset="UTF-8">
+    <title>Least Selling Books</title>
     <style>
-        /* Add your CSS styles here */
+        /* Inline CSS for demonstration purposes */
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
         table {
             border-collapse: collapse;
             width: 100%;
         }
 
         th, td {
-            border: 1px solid black;
+            border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
         }
@@ -23,26 +33,30 @@
         th {
             background-color: #f2f2f2;
         }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
     </style>
 </head>
 <body>
-    <h1>Best Selling Books</h1>
 
-    <% 
+<h1>Least Selling Books</h1>
+<% 
         try {
             int limit = 10; // Set the number of top-selling books to display
 
             // Get the best selling books using the BookDAO
-            List<Book> bestSellingBooks = BookDAO.getBestSellingBooks(limit);
+            List<Book> leastSellingBooks = BookDAO.getLeastSellingBooks(limit);
     %>
 
-    <% if (!bestSellingBooks.isEmpty()) { %>
+    <% if (!leastSellingBooks.isEmpty()) { %>
     <table>
         <tr>
             <th>Title</th>
             <th>Author</th>
         </tr>
-        <% for (Book book : bestSellingBooks) { %>
+        <% for (Book book : leastSellingBooks) { %>
         <tr>
             <td><%= book.getTitle() %></td>
             <td><%= book.getAuthor() %></td>
@@ -55,9 +69,8 @@
     <% } %>
 
     <% } catch (Exception e) { %>
-    <p>Error fetching best selling books: <%= e.getMessage() %></p>
+    <p>Error fetching least selling books: <%= e.getMessage() %></p>
     <% } %>
 
 </body>
 </html>
-

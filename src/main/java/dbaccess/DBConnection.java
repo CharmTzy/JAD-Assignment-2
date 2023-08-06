@@ -7,9 +7,9 @@ import java.sql.SQLException;
 public class DBConnection {
 	
 	public static Connection getConnection() {
-		String dbUrl = "jdbc:mysql://localhost/book_db";
-		String dbUser = "root";
-		String dbPassword = "waiyan04";
+		String dbUrl = "jdbc:mysql://hogwartlibrary.cq8iljpqenuc.us-east-1.rds.amazonaws.com:3306/book_db?user=admin&password=JwaHOknEhIk0NoiTC1oH&serverTimezone=UTC";
+		String dbUser = "admin";
+		String dbPassword = "JwaHOknEhIk0NoiTC1oH";
 		String dbClass = "com.mysql.jdbc.Driver";
 		
 		Connection connection = null;

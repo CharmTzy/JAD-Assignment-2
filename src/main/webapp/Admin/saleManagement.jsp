@@ -354,6 +354,13 @@
 
             // Toggle the side navigation (unchanged) ...
         });
+        const urlParams = new URLSearchParams(window.location.search);
+        const statusUpdated = urlParams.get('statusUpdated');
+
+        // If the "statusUpdated" parameter is present and its value is "true", show the alert box
+        if (statusUpdated === 'true') {
+            alert('Order status updated successfully!');
+        }
         </script>
     </body>
 </html>

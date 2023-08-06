@@ -9,12 +9,13 @@ private String author;
 private float price;
 private String isbn;
 private int quantity;
+private int totalSold;
 
 public Book() {
 	
 }
 
-public Book(String image,int id, String title, String author, float price,String isbn,int quantity) {
+public Book(String image,int id, String title, String author, float price,String isbn,int quantity, int totalSold) {
 	this.image = image;
 	this.id = id;
     this.title = title;
@@ -22,6 +23,7 @@ public Book(String image,int id, String title, String author, float price,String
     this.price = price;
     this.isbn = isbn;
     this.quantity = quantity;
+    this.totalSold = totalSold;
 }
 
 public String getIsbn() {
@@ -69,5 +71,11 @@ public int getQuantity() {
 }
 public void setQuantity(int quantity) {
 	this.quantity = quantity;
+}
+public int getTotalSold() {
+	return totalSold;
+}
+public void setTotalSold(int totalSold) {
+	this.totalSold = totalSold;
 }
 }
